@@ -10,15 +10,27 @@ interface SQLGenerationResult {
 class LLMService {
   private apiKey: string;
   private provider: string;
+  private ollamaBaseUrl: string;
+  private ollamaModel: string;
 
   constructor() {
-    this.provider = process.env.LLM_PROVIDER || 'claude';
-    this.apiKey = this.provider === 'claude'
-      ? process.env.CLAUDE_API_KEY || ''
-      : process.env.OPENAI_API_KEY || '';
-
-    if (!this.apiKey) {
-      throw new Error(`Missing ${this.provider.toUpperCase()}_API_KEY in environment`);
+    this.provider = process.env.LLM_PROVIDER || 'ollama';
+    this.ollamaBaseUrl = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
+    this.ollamaModel = process.env.OLLAMA_MODEL || 'mistral';
+    
+    // API key only required for Claude and OpenAI
+    if (this.provider === 'claude') {
+      this.apiKey = process.env.CLAUDE_API_KEY || '';
+      if (!this.apiKey) {
+        throw new Error('Missing CLAUDE_API_KEY in environment');
+      }
+    } else if (this.provider === 'openai') {
+      this.apiKey = process.env.OPENAI_API_KEY || '';
+      if (!this.apiKey) {
+        throw new Error('Missing OPENAI_API_KEY in environment');
+      }
+    } else if (this.provider !== 'ollama') {
+      throw new Error(`Unknown LLM_PROVIDER: ${this.provider}. Use: ollama, claude, or openai`);
     }
   }
 
@@ -26,7 +38,9 @@ class LLMService {
     const systemPrompt = this.buildSystemPrompt(input);
     const userPrompt = `Convert this prompt to SQL: "${input.prompt}"`;
 
-    if (this.provider === 'claude') {
+    if (this.provider === 'ollama') {
+      return this.callOllamaAPI(systemPrompt, userPrompt);
+    } else if (this.provider === 'claude') {
       return this.callClaudeAPI(systemPrompt, userPrompt);
     } else {
       return this.callOpenAIAPI(systemPrompt, userPrompt);
@@ -45,6 +59,25 @@ Rules:
 3. Return JSON format: {"sql": "...", "parameters": [...], "operation": "INSERT|SELECT|UPDATE|DELETE"}
 4. Validate column names against the schema
 5. Use appropriate SQL syntax for the database type`;
+  }
+
+  private async callOllamaAPI(systemPrompt: string, userPrompt: string): Promise<SQLGenerationResult> {
+    try {
+      const response = await axios.post(
+        `${this.ollamaBaseUrl}/api/generate`,
+        {
+          model: this.ollamaModel,
+          prompt: `${systemPrompt}\n\nUser: ${userPrompt}\n\nAssistant:`,
+          stream: false,
+          temperature: 0.2
+        }
+      );
+
+      const content = response.data.response;
+      return this.parseJSONResponse(content);
+    } catch (error: any) {
+      throw new Error(`Ollama API error: ${error.message}. Make sure Ollama is running on ${this.ollamaBaseUrl}`);
+    }
   }
 
   private async callClaudeAPI(systemPrompt: string, userPrompt: string): Promise<SQLGenerationResult> {

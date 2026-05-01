@@ -1,10 +1,11 @@
 # AI SQL Parser Middleware
 
-An intelligent API middleware that converts natural language prompts into executable SQL statements for any SQL database.
+An intelligent API middleware that converts natural language prompts into executable SQL statements for any SQL database. **Completely free** using Ollama running locally on your machine.
 
 ## Features
 
-- 🤖 **AI-Powered**: Uses Claude or OpenAI to understand natural language
+- 🤖 **AI-Powered**: Uses Ollama (free, local) as primary, with Claude or OpenAI support
+- 💰 **Completely Free**: Ollama runs locally—no API charges
 - 🔄 **Multi-Database Support**: Works with PostgreSQL, MySQL, SQLite, and more
 - 🛡️ **SQL Injection Safe**: Always generates parameterized queries
 - 🔌 **Middleware Design**: Independent API that serves multiple projects
@@ -16,24 +17,38 @@ An intelligent API middleware that converts natural language prompts into execut
 ### Prerequisites
 - Node.js 18+ 
 - npm or yarn
-- Claude API key (or OpenAI API key)
+- **Ollama** (free download from https://ollama.ai)
 
 ### Installation
 
-```bash
-# Install dependencies
-npm install
+1. **Install Ollama**
+   - Download from https://ollama.ai
+   - Install and run the application
 
-# Copy environment template
-cp .env.example .env
+2. **Download a Model**
+   ```bash
+   ollama pull mistral
+   # Alternative: ollama pull neural-chat (smaller, faster)
+   ```
 
-# Update .env with your API keys
-# CLAUDE_API_KEY=your_key_here
-```
+3. **Setup Project**
+   ```bash
+   # Clone and install
+   npm install
+
+   # Copy environment template
+   cp .env.example .env
+
+   # .env is pre-configured for Ollama, no API keys needed!
+   ```
 
 ### Development
 
 ```bash
+# Make sure Ollama is running
+ollama serve
+
+# In another terminal:
 npm run dev
 ```
 
@@ -83,6 +98,22 @@ npm start
 - `MODIFY` → UPDATE
 - `CHECK` → SELECT
 
+## LLM Providers
+
+### Ollama (Primary - FREE)
+- **Cost**: $0 (runs locally)
+- **Setup**: Download from https://ollama.ai
+- **Models**: mistral, neural-chat, llama2, etc.
+- **Best for**: Development, free tier, privacy
+
+### Claude (Optional)
+- **Cost**: Pay per token (~$0.003 per 1K input)
+- **Setup**: Add `CLAUDE_API_KEY` to `.env`, set `LLM_PROVIDER=claude`
+
+### OpenAI (Optional)
+- **Cost**: $0 free trial + pay per token
+- **Setup**: Add `OPENAI_API_KEY` to `.env`, set `LLM_PROVIDER=openai`
+
 ## Documentation
 
 - [Architecture](./docs/ARCHITECTURE.md)
@@ -113,9 +144,9 @@ npm start
 ```
 PORT=3000
 NODE_ENV=development
-LLM_PROVIDER=claude
-CLAUDE_API_KEY=your_key
-OPENAI_API_KEY=optional
+LLM_PROVIDER=ollama
+OLLAMA_MODEL=mistral
+OLLAMA_BASE_URL=http://localhost:11434
 LOG_LEVEL=debug
 ```
 

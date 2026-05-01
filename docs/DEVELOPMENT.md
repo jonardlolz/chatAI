@@ -5,35 +5,51 @@
 ### Prerequisites
 - Node.js 18 or higher
 - npm or yarn
-- Claude API key or OpenAI API key
+- **Ollama** (free, from https://ollama.ai)
 
 ### Setup
 
-1. **Clone the repository**
+1. **Install Ollama**
+   - Download from https://ollama.ai
+   - Run the installer and start the application
+
+2. **Download a Model**
+   ```bash
+   ollama pull mistral
+   # Alternative faster model: ollama pull neural-chat
+   ```
+
+3. **Clone the repository**
    ```bash
    git clone <repository-url>
    cd ai-sql-parser
    ```
 
-2. **Install dependencies**
+4. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Configure environment**
+5. **Configure environment**
    ```bash
    cp .env.example .env
    ```
    
-   Edit `.env` and add your API keys:
+   The `.env` is pre-configured for Ollama by default:
    ```
-   CLAUDE_API_KEY=your_api_key_here
+   LLM_PROVIDER=ollama
+   OLLAMA_MODEL=mistral
+   OLLAMA_BASE_URL=http://localhost:11434
    PORT=3000
    NODE_ENV=development
    ```
 
-4. **Start development server**
+6. **Start Ollama and development server**
    ```bash
+   # Terminal 1: Start Ollama
+   ollama serve
+   
+   # Terminal 2: Start development server
    npm run dev
    ```
    

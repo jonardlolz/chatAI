@@ -23,13 +23,17 @@ The AI SQL Parser is a middleware service that acts as a bridge between natural 
 ┌──────────────────────────┐  ┌──────────────────────────┐
 │   LLM Service            │  │   Validation Service     │
 │  ┌──────────────────────┐│  │ ┌──────────────────────┐ │
-│  │ Claude API           ││  │ │ SQL Validator        │ │
-│  │ (Recommended)        ││  │ │ Schema Validator     │ │
+│  │ Ollama               ││  │ │ SQL Validator        │ │
+│  │ (Primary, Free)      ││  │ │ Schema Validator     │ │
 │  │                      ││  │ │ Injection Detection  │ │
 │  └──────────────────────┘│  │ └──────────────────────┘ │
 │  ┌──────────────────────┐│  │                          │
+│  │ Claude API           ││  │                          │
+│  │ (Optional)           ││  │                          │
+│  └──────────────────────┘│  │                          │
+│  ┌──────────────────────┐│  │                          │
 │  │ OpenAI API           ││  │                          │
-│  │ (Alternative)        ││  │                          │
+│  │ (Optional)           ││  │                          │
 │  └──────────────────────┘│  │                          │
 └──────────────────────────┘  └──────────────────────────┘
                │                      │

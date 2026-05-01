@@ -5,27 +5,35 @@ This document outlines the major architectural and technical decisions made for 
 
 ---
 
-## 1. **LLM Provider Selection: Claude API (Primary)**
+## 1. **LLM Provider Selection: Ollama (Primary)**
 
 ### Decision
-Use Anthropic's Claude API as the primary LLM provider, with OpenAI as a fallback.
+Use Ollama as the primary LLM provider (running locally on user's machine), with Claude and OpenAI as optional alternatives.
 
 ### Rationale
-- **Superior Structured Outputs**: Claude excels at generating structured JSON responses
-- **Better SQL Reasoning**: Claude's instruction-following produces more accurate SQL
-- **Context Length**: Larger context window for complex schema information
-- **Cost Efficiency**: Better token efficiency for SQL generation tasks
-- **Reliability**: Consistent output formatting
+- **Completely Free**: Zero API costs, runs locally on your machine
+- **Privacy**: Data never leaves your system
+- **No Dependencies**: No external API keys required
+- **Developer Friendly**: Easy to experiment and test
+- **Flexible Models**: Support for Mistral, Llama 2, Neural Chat, and more
+- **Offline Capable**: Works without internet connection
 
 ### Alternative Considered
-- OpenAI GPT-4: Industry standard but less structured output
-- Local Models (Ollama): Free but slower, more resource-intensive
+- Claude API: Excellent structured outputs but costs $0.003+ per 1K tokens
+- OpenAI GPT-4: Industry standard but requires API key and charges per token
+- Local Models: Same as Ollama (chosen approach)
 
 ### Implementation
 ```typescript
-LLM_PROVIDER=claude  // Set in .env
-CLAUDE_API_KEY=***   // Required API key
+LLM_PROVIDER=ollama  // Set in .env (default)
+OLLAMA_MODEL=mistral // Recommended model
+OLLAMA_BASE_URL=http://localhost:11434
 ```
+
+### Trade-offs
+- **Pro**: Free, private, easy setup
+- **Con**: Slower than cloud APIs, requires local resources
+- **Solution**: Claude/OpenAI still available as alternatives if needed
 
 ---
 

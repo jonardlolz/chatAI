@@ -7,6 +7,9 @@
     "dev": "nodemon --exec ts-node src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
+    "local:start": "bash ./local-deploy.sh start",
+    "local:stop": "bash ./local-deploy.sh stop",
+    "local:status": "bash ./local-deploy.sh status",
     "test": "jest",
     "lint": "eslint src --ext .ts"
   },
@@ -24,6 +27,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "fastify": "^5.8.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {

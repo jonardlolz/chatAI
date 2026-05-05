@@ -8,7 +8,7 @@ interface SQLGenerationResult {
 }
 
 class LLMService {
-  private apiKey: string;
+  private apiKey: string = '';
   private provider: string;
   private ollamaBaseUrl: string;
   private ollamaModel: string;
@@ -16,7 +16,7 @@ class LLMService {
   constructor() {
     this.provider = process.env.LLM_PROVIDER || 'ollama';
     this.ollamaBaseUrl = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
-    this.ollamaModel = process.env.OLLAMA_MODEL || 'mistral';
+    this.ollamaModel = process.env.OLLAMA_MODEL || 'phi4-mini';
     
     // API key only required for Claude and OpenAI
     if (this.provider === 'claude') {

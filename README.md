@@ -27,8 +27,8 @@ An intelligent API middleware that converts natural language prompts into execut
 
 2. **Download a Model**
    ```bash
-   ollama pull mistral
-   # Alternative: ollama pull neural-chat (smaller, faster)
+   ollama pull phi4-mini
+   # Alternative: ollama pull llama3:latest or phi3
    ```
 
 3. **Setup Project**
@@ -53,6 +53,16 @@ npm run dev
 ```
 
 The API will start on `http://localhost:3000`
+
+### Local deployment helper
+
+This repo also includes a local helper script for starting and stopping Ollama + the API together.
+
+```bash
+npm run local:start
+npm run local:stop
+npm run local:status
+```
 
 ### Build for Production
 
@@ -103,8 +113,8 @@ npm start
 ### Ollama (Primary - FREE)
 - **Cost**: $0 (runs locally)
 - **Setup**: Download from https://ollama.ai
-- **Models**: mistral, neural-chat, llama2, etc.
-- **Best for**: Development, free tier, privacy
+- **Models**: phi4-mini, llama3:latest, phi3, etc.
+- **Best for**: Development, low-resource local usage, privacy
 
 ### Claude (Optional)
 - **Cost**: Pay per token (~$0.003 per 1K input)
@@ -145,7 +155,7 @@ npm start
 PORT=3000
 NODE_ENV=development
 LLM_PROVIDER=ollama
-OLLAMA_MODEL=mistral
+OLLAMA_MODEL=phi4-mini
 OLLAMA_BASE_URL=http://localhost:11434
 LOG_LEVEL=debug
 ```

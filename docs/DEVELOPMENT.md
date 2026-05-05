@@ -15,8 +15,8 @@
 
 2. **Download a Model**
    ```bash
-   ollama pull mistral
-   # Alternative faster model: ollama pull neural-chat
+   ollama pull phi4-mini
+   # Alternative faster model: ollama pull llama3:latest or phi3
    ```
 
 3. **Clone the repository**
@@ -38,7 +38,7 @@
    The `.env` is pre-configured for Ollama by default:
    ```
    LLM_PROVIDER=ollama
-   OLLAMA_MODEL=mistral
+   OLLAMA_MODEL=phi4-mini
    OLLAMA_BASE_URL=http://localhost:11434
    PORT=3000
    NODE_ENV=development

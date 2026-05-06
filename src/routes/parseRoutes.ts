@@ -7,7 +7,7 @@ const router = Router();
  * POST /api/parse
  * Convert natural language prompt to SQL
  */
-router.post('/parse', async (req: Request, res: Response) => {
+const handleParseRequest = async (req: Request, res: Response) => {
   try {
     const result = await parseController.parsePrompt(req.body);
     res.json(result);
@@ -17,6 +17,9 @@ router.post('/parse', async (req: Request, res: Response) => {
       error: error.message
     });
   }
-});
+};
+
+router.post('/parse', handleParseRequest);
+router.post('/products/ai/parse', handleParseRequest);
 
 export default router;
